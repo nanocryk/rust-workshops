@@ -176,7 +176,114 @@ fn main() {
 - `println!` permet d'afficher du texte
 - `!` indique que l'on appelle une macro
 - on ecrirait `println("Hello, world!")` si c'était une fonction
-  
+
+---
+template: default
+layout: true
+
+### Concepts de bases
+
+---
+# Variables
+
+Les variables sont déclarées avec le mot-clé `let` :
+
+```rust
+let ma_variable = 0;
+```
+
+De part son utilisation, Rust en déduit que c'est un nombre.
+
+On peut donner explicitement le type de la variable :
+
+```rust
+let ma_variable: u32 = 0;
+```
+
+Les types de nombres sont :
+
+- `u8`, `u16`, `u32`, `u64`, `u128` : nombre naturels
+- `i8`, `i16`, `i32`, `i64`, `i128` : nombre entiers
+- `f32`, `f64` : nombre réels
+- `bool` : booléen, `true` ou `false`
+
+---
+# Mutabilité
+
+Immutable par defaut.
+
+```rust
+let ma_variable = 0;
+ma_variable = 42; // erreur de compilation
+```
+
+Le mot-clé `mut` permet de rendre une variable mutable :
+
+```rust
+let mut ma_variable = 0;
+ma_variable = 42;
+```
+
+---
+# Branchements
+
+```rust
+if ma_variable < 100 {
+    // faire quelque chose
+}
+```
+
+```rust
+if ma_variable < 100 {
+    // faire quelque chose
+} else if ma_variable < 200 {
+    // ou autre chose
+} else {
+    // sinon ça
+}
+```
+
+> Pas de `()` autour de la condition, `{}` obligatoires.
+
+---
+# Expressions et instructions
+
+Une expression peut retourner une valeur, une instruction non.  
+Un `;` transforme une expression en instruction.  
+
+
+--
+Les blocs `if/else` sont des expressions, on peut donc faire :
+
+```rust
+let var2 = 18 + if ma_variable < 100 {
+    42
+} else {
+    96
+};
+```
+
+---
+# Boucles
+
+```rust
+while ma_variable < 100 {
+    // faire quelque chose
+}
+```
+
+Une boucle infinie peut s'écrire
+
+```rust
+loop {
+    // faire quelque chose
+}
+```
+
+- `continue;` : passe au tour de boucle suivant
+- `break;` : sort de la boucle
+
+> Note : `break valeur;` permet de retourner une valeur en dehors de la boucle.
         </textarea>
         <script src="res/remark-latest.min.js">
         </script>
