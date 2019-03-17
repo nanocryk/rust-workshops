@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Decouverte du langage Rust</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="res/milligram.min.css">
+        <link rel="stylesheet" href="res/custom.css">
+    </head>
+    <body>
+        <textarea id="source">
+name: default
+layout: true
+
+---
+class: center, middle
+
+# Découverte du langage Rust
+
+![Rust Logo](res/rust_logo.png)
+
+Réalisé par _nanocryk <nanocryk+rust@pm.me>_ 
+
+> TODO : Insérer lien dépos/github pages
+
+---
+template: default
+layout: true
+
+### Qu'est-ce que le Rust ?
+
+---
+## Présentation
+
+- développé par Mozilla
+- compilé
+- statiquement et fortement typé
+- paradigmes concurrents, fonctionnels et impératifs
+- gère automatiquement l'allocation et libération de la mémoire
+- n'utilise pas de garbage collector
+- pas de *null pointer*, *use after free*, *double free*, ...
+- pas de *data race* dans du code séquentiel comme concurrent
+
+---
+template: default
+layout: true
+
+### Installation
+
+---
+# Rustup
+
+```
+curl https://sh.rustup.rs -sSf | sh
+```
+
+- gère les toolchains (version du langage, stable/nightly, plateforme cible)
+- installation de plugins du compilateur
+- intègre cargo, gestionnaire de projets et de dépendances
+
+> **Attention** : Bien s'assurer que `~/.cargo/bin` soit dans votre `PATH`.
+
+        </textarea>
+        <script src="res/remark-latest.min.js">
+        </script>
+        <script>
+            var slideshow = remark.create();
+        </script>
+    </body>
+</html>
