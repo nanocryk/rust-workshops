@@ -60,6 +60,57 @@ curl https://sh.rustup.rs -sSf | sh
 
 > **Attention** : Bien s'assurer que `~/.cargo/bin` soit dans votre `PATH`.
 
+Pour mettre à jour les toolchains :
+
+```
+rustup update
+```
+
+---
+# IDE
+
+## Visual Studo Code
+
+-   Rust(rls) `rust-lang.rust`  
+    Autocompletion, affichage des erreurs/warnings.
+-   Better TOML `bungcip.better-toml`  
+    Fichiers de configuration
+-   crates `serayuzgur.crates`  
+    Info sur les dépendances depuis le fichier de config
+-   CodeLLDB `vadimcn.vscode-lldb`  
+    Debugging
+
+## IntelliJ
+
+- Plugin Rust
+
+---
+## Quelques autres outils
+
+### clippy
+
+Pour avoir des suggestions de code plus idiomatique
+
+```
+rustup component add clippy
+```
+
+```
+cargo fmt
+```
+
+### format
+
+Pour suivre les conventions de style
+
+```
+rustup component add rustfmt
+```
+
+```
+cargo clippy
+```
+  
         </textarea>
         <script src="res/remark-latest.min.js">
         </script>
