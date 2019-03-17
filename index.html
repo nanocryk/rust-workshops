@@ -10,6 +10,7 @@
         <textarea id="source">
 name: default
 layout: true
+class: dark
 
 ---
 class: center, middle
@@ -208,6 +209,19 @@ Les types de nombres sont :
 - `bool` : booléen, `true` ou `false`
 
 ---
+# println!
+
+`println!` permet d'afficher la valeur des variables.
+
+```rust
+let val = 42;
+println!("La réponse est {}", 42);
+```
+
+L'affichage des données est assez personnalisable mais nécéssite des
+notions plus avancées.
+
+---
 # Mutabilité
 
 Immutable par defaut.
@@ -284,11 +298,91 @@ loop {
 - `break;` : sort de la boucle
 
 > Note : `break valeur;` permet de retourner une valeur en dehors de la boucle.
+
+---
+# Boucles
+
+La boucle `for` permet de parcourir des itérateurs, par exemple l'interval :
+
+```rust
+for i in [0..10] {
+    println!("i = {}", i);
+}
+
+// 0
+// 1
+// ...
+// 8
+// 9
+```
+
+> La valeur de droite est exlue.
+> Pour quelle soit inclue, il faut écrire `[0..=10]`.
+
+
+---
+template: default
+layout: true
+
+### Propriétaire et emprunts
+
+---
+# Propriétaire
+
+Le concept principal de Rust !
+
+- Chaque valeur a une variable appellée son propriétaire (owner).
+- Il ne peux y avoir qu'un seul propriétaire à la fois.
+- Quand le propriétaire sort de son contexte, la valeur est détruite.
+
+> Conséquence : pas de gestion manuelle de la mémoire (`malloc`/`free`).
+
+---
+# Emprunts
+
+Une valeur peut être empruntée sous la forme d'une référence.
+
+Il existe 2 types de références :
+
+- les références partagées `&` (lecture seule)
+- les rérérences uniques `&mut` (lecture et écriture)
+
+Pour une même valeur il ne peut y avoir qu'une référence unique ou plusieurs
+références partagées, mais pas les 2 en même temps.
+
+> Conséquence : pas de data race
+
+---
+# Tableaux
+
+Tableaux de taille statique :
+
+```rust
+let mut array: [u32; 4] = [1, 2, 3, 4];
+array[1] = 42;
+```
+
+Tableaux de taille dynamique :
+
+```rust
+let mut vec: Vec<u32> = vec![1, 2, 3, 4];
+vec[1] = 42;
+vec.push(28);
+```
+
+Références de tableaux (slices) :
+
+```rust
+let vec = vec![1, 2, 3, 4, 5];
+let slice: &[u32] = vec[1..3]; // [2, 3] 
+```
         </textarea>
         <script src="res/remark-latest.min.js">
         </script>
         <script>
-            var slideshow = remark.create();
+            var slideshow = remark.create({
+                highlightStyle: 'tomorrow-night',
+            });
         </script>
     </body>
 </html>

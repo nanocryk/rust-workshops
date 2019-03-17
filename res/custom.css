@@ -31,7 +31,11 @@ h3 {
   }
   code {
     background: transparent !important;
-  } */
+	} */
+	
+pre, code {
+	background-color: #1d1f21;
+}
 a {
 	color: #f92672;
 	text-decoration: none;
