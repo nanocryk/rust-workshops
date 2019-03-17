@@ -110,6 +110,72 @@ rustup component add rustfmt
 ```
 cargo clippy
 ```
+
+---
+template: default
+layout: true
+
+### Hello, world!
+
+---
+# Créer un projet
+
+```
+cargo new ws-hello-world
+cd ws-hello-world
+```
+
+Le dossier contient les fichiers suivants :
+
+```
+Cargo.toml
+src/
+    main.rs
+```
+
+Compiler et lancer le projet :
+
+```
+cargo run
+```
+
+---
+# Cargo.toml
+
+```toml
+[package]
+# Nom du projet
+name = "ws-hello-world"
+
+# Version du projet
+version = "0.1.0"
+
+# Auteurs
+authors = ["nanocryk <nanocryk+rust@pm.me>"]
+
+# Edition de Rust (2018 ou 2015; 2015 si absent)
+edition = "2018" 
+
+
+# Liste des dépendances
+[dependencies]
+```
+
+---
+# main.rs
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+--
+- `fn` permet de déclarer une fonction
+- `main` est la fonction principale du programme
+- `println!` permet d'afficher du texte
+- `!` indique que l'on appelle une macro
+- on ecrirait `println("Hello, world!")` si c'était une fonction
   
         </textarea>
         <script src="res/remark-latest.min.js">
