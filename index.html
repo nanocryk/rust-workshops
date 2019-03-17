@@ -239,7 +239,7 @@ ma_variable = 42;
 ```
 
 ---
-# Branchements
+# Conditions
 
 ```rust
 if ma_variable < 100 {
@@ -350,7 +350,28 @@ Il existe 2 types de références :
 Pour une même valeur il ne peut y avoir qu'une référence unique ou plusieurs
 références partagées, mais pas les 2 en même temps.
 
-> Conséquence : pas de data race
+De plus, une référence ne peux pas exister plus longtemps que le propriétaire.
+
+---
+# Emprunts (exemple)
+
+```rust
+let o = {
+    let val = 42;
+    {
+        let r = &val; // ok
+        let s = &val; // ok
+        let v = &mut val; // erreur : &mut et & en même temps
+    } // fin du bloc, r, s et v sont détruits
+
+    let r = &mut val; // ok
+    let s = &mut val; // erreur : 2 &mut en même temps
+
+    r
+    // erreur : val va être détruit alors que l'on retourne une
+    // référence de sa valeur.
+}
+```
 
 ---
 # Tableaux
