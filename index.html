@@ -421,6 +421,8 @@ la forme de référence `&str`. Pour allouer une chaîne dynamiquement, on utili
 le type `String`. Une chaîne présente "en dûr" dans le code est appellée une
 "string literal" et est de type `&str`.
 
+Chaque caractère est de type `char`.
+
 ---
 # Chaîne de caractères
 
@@ -568,6 +570,50 @@ struct Vitesse(u32, u32);
 
 ```rust
 let pos: Position = Vitesse(4, 5); // erreur de type
+```
+
+---
+# Énumérations
+
+```rust
+enum Couleur {
+    Bleu,
+    Rouge,
+    Jaune,
+    Vert
+}
+
+enum Action {
+    Rien,
+    Clic(u32, u32),
+    Touche {
+        lettre: char,
+        appui: bool
+    }
+}
+```
+
+---
+# Pattern matching
+
+```rust
+match action {
+    Action::Rien => {},
+    Action::Clic(0, _) => println!("clic quelque part en 0,?"),
+    Action::Clic(10, y) => println!("clic en 10,{}", y),
+    Action::Clic(x, y) if x < y => {
+        println!("clic en x=({}) < y=({})", x, y)
+    },
+    Action::Touche{lettre, true} => {
+        println!("appui sur {}", lettre)
+    },
+    Action::Touche{lettre: 'a', false} => {
+        println!("relachement de a")
+    },
+    // tous les cas doivent être traités
+    // pour avoir un comportement par défaut, utilser
+    _ => println!("une autre touche à été relachée"),
+}
 ```
 
 
