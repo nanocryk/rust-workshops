@@ -277,6 +277,20 @@ let var2 = 18 + if ma_variable < 100 {
 ```
 
 ---
+# Expressions
+
+Mettre un `;` à la fin d'un expression empêche de retourner. Chaque branche
+doit avoir le même type de retour.
+
+```rust
+let var2 = 18 + if ma_variable < 100 {
+    42; // ne retourne rien
+} else {
+    96 // retourne un entier
+}; // erreur : les 2 branches n'ont pas le même type
+```
+
+---
 # Boucles
 
 ```rust
@@ -426,6 +440,136 @@ println!("{}", hello_world); // Hello, world!
 > Note : le premier paramètre de `println!` doit obligatoirement est une
 > "string literal", puisque le formattage est vérifié à la compilation. On ne 
 > peut donc pas utiliser directement `hello_world`.
+
+---
+template: default
+layout: true
+
+### Créer ses propres fonctions et types
+
+---
+# Fonctions
+
+```rust
+fn add(a: u32, b: u32) -> u32 {
+    a + b
+}
+```
+
+La plupart des types primitif et quelques exceptions sont copiés, les autres
+sont déplacées dans la fonction, et l'appelant n'est plus le propriétaire.
+
+```rust
+// la chaîne est déplacée dans la fonction
+fn afficher(t: String) {
+    // elle est affichée
+    println!("{}", t);
+} // fin du propriétaire, t est détruite
+```
+
+---
+# Passage par référence
+
+```rust
+// la chaîne est empruntée
+fn afficher(t: &str) {
+    // elle est affichée
+    println!("{}", t);
+} // elle est rendue et non détruire
+```
+
+Les types pouvant être copiés le sont car c'est souvent plus rapide que de
+passer par une référence.
+
+---
+# Structures
+
+```rust
+struct MonType {
+    un_entier: u32,
+    du_texte: String,
+}
+```
+
+```rust
+let var = MonType {
+    un_entier: 42,
+    du_texte: "Hello, world!",
+};
+
+println!("{} / {}", var.un_entier, var.du_texte);
+```
+
+---
+# Méthodes
+
+On peut implémenter des fonctions directement sur les `struct` :
+
+```rust
+impl MonType {
+    // par référence partagée
+    fn parler(&self) {
+        println!("{}", self.du_texte);
+    }
+
+    // par référence unique
+    fn add(&mut self, val: u32) {
+        self.un_entier += val;
+    }
+
+    // par déplacement
+    fn into_text(self) -> String {
+        self.du_texte
+    } // l'appelant devient propriétaire de `du_texte`,
+      // le reste est détruit
+}
+```
+
+---
+# Tuples
+
+Pour des groupements simples, on peut éviter de déclarer une `struct`
+et utiliser un tuple :
+
+```rust
+let pos: (u32, u32) = (5, 6);
+println!("{}, {}", pos.0, pos.1);
+```
+
+C'est très utile pour retourner plusieurs valeurs d'une fonction.
+
+```rust
+fn euclide(den: u32, div: u32) -> (u32, u32) {
+    (den / div, den % div)
+}
+```
+
+---
+# Structure tuple
+
+S'il est inutile de nommer les éléments d'une structure, on peut la
+déclarer comme ceci :
+
+```rust
+struct Positon(u32, u32);
+```
+
+```rust
+let pos = Position(4, 5);
+println!("{}, {}", pos.0, pos.1);
+```
+
+Contrairement aux tuples, 2 structures ayant les mêmes types d'éléments
+ne sont pas interchangeables.
+
+```rust
+struct Vitesse(u32, u32);
+```
+
+```rust
+let pos: Position = Vitesse(4, 5); // erreur de type
+```
+
 
         </textarea>
         <script src="res/remark-latest.min.js">
