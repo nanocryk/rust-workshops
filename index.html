@@ -260,14 +260,13 @@ if ma_variable < 100 {
 > Pas de `()` autour de la condition, `{}` obligatoires.
 
 ---
-# Expressions et instructions
+# Expressions
 
-Une expression peut retourner une valeur, une instruction non.  
-Un `;` transforme une expression en instruction.  
+La value de la dernière expression d'un bloc (if/else, fonction, etc) est
+retourné dans le bloc supérieur.
 
 
---
-Les blocs `if/else` sont des expressions, on peut donc faire :
+On peut par exemple ecrire ceci :
 
 ```rust
 let var2 = 18 + if ma_variable < 100 {
@@ -302,7 +301,7 @@ loop {
 ---
 # Boucles
 
-La boucle `for` permet de parcourir des itérateurs, par exemple l'interval :
+La boucle `for` permet de parcourir des itérateurs, par exemple un interval :
 
 ```rust
 for i in [0..10] {
@@ -327,7 +326,7 @@ layout: true
 ### Propriétaire et emprunts
 
 ---
-# Propriétaire
+# Propriétée
 
 Le concept principal de Rust !
 
@@ -368,8 +367,8 @@ let o = {
     let s = &mut val; // erreur : 2 &mut en même temps
 
     r
-    // erreur : val va être détruit alors que l'on retourne une
-    // référence de sa valeur.
+    // erreur : val va être détruit alors que l'on en retourne une
+    // référence.
 }
 ```
 
@@ -391,12 +390,43 @@ vec[1] = 42;
 vec.push(28);
 ```
 
-Références de tableaux (slices) :
+Références d'un tableaux (slices) :
 
 ```rust
 let vec = vec![1, 2, 3, 4, 5];
 let slice: &[u32] = vec[1..3]; // [2, 3] 
 ```
+
+---
+# Chaîne de caractères
+
+Les chaîne de caractères sont encodées en UTF8 (beaucoup d'alphabets, emojis, etc).
+
+Le type principale est la "string slice" `str`, utilisée la plupart du temps sous
+la forme de référence `&str`. Pour allouer une chaîne dynamiquement, on utilise
+le type `String`. Une chaîne présente "en dûr" dans le code est appellée une
+"string literal" et est de type `&str`.
+
+---
+# Chaîne de caractères
+
+```rust
+let hello = "Hello"; // &str
+let world = ", world!" // &str
+let hello = hello.to_owned() // String
+
+// la concatenation consomme le partie de gauche et lui ajoute la
+// partie de droite. La partie de gauche doit donc être une
+// `String`, la droite peut être une `&str`.
+let hello_world = hello + world; 
+
+println!("{}", hello_world); // Hello, world!
+```
+
+> Note : le premier paramètre de `println!` doit obligatoirement est une
+> "string literal", puisque le formattage est vérifié à la compilation. On ne 
+> peut donc pas utiliser directement `hello_world`.
+
         </textarea>
         <script src="res/remark-latest.min.js">
         </script>
