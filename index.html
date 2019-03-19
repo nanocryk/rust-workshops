@@ -37,10 +37,23 @@ layout: true
 - compilé
 - statiquement et fortement typé
 - paradigmes concurrents, fonctionnels et impératifs
+
+---
+## Présentation
+
 - gère automatiquement l'allocation et libération de la mémoire
 - n'utilise pas de garbage collector
 - pas de *null pointer*, *use after free*, *double free*, ...
 - pas de *data race* dans du code séquentiel comme concurrent
+
+---
+## Présentation
+
+- très rapide et abstraction sans coût (pas de runtime)
+- très expressif (pattern matching, iterateurs)
+- potentiel successeur du C++
+- ... elu "langage le plus aimé de 2017" par la communauté de
+  Stack Overflow.
 
 ---
 template: default
@@ -171,7 +184,6 @@ fn main() {
 }
 ```
 
---
 - `fn` permet de déclarer une fonction
 - `main` est la fonction principale du programme
 - `println!` permet d'afficher du texte
@@ -340,7 +352,7 @@ layout: true
 ### Propriétaire et emprunts
 
 ---
-# Propriétée
+# Propriété
 
 Le concept principal de Rust !
 
@@ -418,10 +430,10 @@ Les chaîne de caractères sont encodées en UTF8 (beaucoup d'alphabets, emojis,
 
 Le type principale est la "string slice" `str`, utilisée la plupart du temps sous
 la forme de référence `&str`. Pour allouer une chaîne dynamiquement, on utilise
-le type `String`. Une chaîne présente "en dûr" dans le code est appellée une
-"string literal" et est de type `&str`.
+le type `String`.Une chaîne présente "en dûr" dans le code est appellée une
+"string literal", est de type `&str` et s'écrit `"en guillets doubles"`.
 
-Chaque caractère est de type `char`.
+Chaque caractère est de type `char` et s'écrit entre guillets simples `'a'`.
 
 ---
 # Chaîne de caractères
@@ -441,7 +453,7 @@ println!("{}", hello_world); // Hello, world!
 
 > Note : le premier paramètre de `println!` doit obligatoirement est une
 > "string literal", puisque le formattage est vérifié à la compilation. On ne 
-> peut donc pas utiliser directement `hello_world`.
+> peut donc pas utiliser directement écrire `println!(hello_world)`.
 
 ---
 template: default
@@ -614,6 +626,119 @@ match action {
     // pour avoir un comportement par défaut, utilser
     _ => println!("une autre touche à été relachée"),
 }
+```
+
+---
+template: default
+layout: true
+
+### Généricité
+
+---
+# Option
+
+Quand on veut retourner une valeur qui peut être optionelle,
+on utilise le type `Option<T>`, où `T` est le type de la valeur.
+On dit que `T` est un type générique, ou paramètre de type.
+
+`Option` est défini comme :
+
+```rust
+enum Option<T> {
+    Some(T), // une valeur
+    None     // pas de valeur
+}
+```
+
+```rust
+match val {
+    Some(val) => println!("val vaut {}", val),
+    None => println!("val ne vaut rien"),
+}
+```
+
+---
+# Result
+
+Quand une opération peut retourner une valeur ou échouer, on
+utilise `Result<T, E>` défini comme :
+
+```rust
+enum Result {
+    Ok(T),
+    Err(E),
+}
+```
+
+```rust
+match res {
+    Ok(_) => println!("tout c'est bien passé !"),
+    Err(err) => println!("erreur: {}", err),
+}
+```
+
+Les types `Option` et `Result` remplacent les exceptions présentes
+dans d'autre langage mais absentes du Rust.
+
+---
+# Traits
+
+Un trait représente une contraite que doit respecter un type.
+Il demande souvant d'implémenter une ou plusieurs methodes.
+Il peut aussi demander de spécifier un type associé.
+
+Le trait `Add` qui permet l'addition entre 2 valeurs est définie
+
+```rust
+// par default RHS est Self, mais on peut en décider autrement
+trait Add<RHS = Self> {  
+    type Output;
+
+    fn add(self, rhs: RHS) -> Self::Output;
+}
+```
+
+---
+# Contraintes
+
+On peut ensuite utiliser ces traits pour ne manipuler que des types
+respectant les contraintes voulues :
+
+```rust
+fn ajouter<T: Add>(a: T, b: T) -> T::Output {
+    a + b
+}
+```
+
+La contraines peut aussi être écrite avec le mot-clé `where` pour plus
+de lisibilité (notament avec des contraintes plus complèxes) :
+
+```rust
+fn ajouter<T>(a: T, b: T) -> T::Output
+where
+    T: Add
+{
+    a + b
+}
+```
+
+---
+# Traits principaux
+
+- `Debug` : affichage "dev-friendly", devrait être impl sur tous les types
+- `Display` : affichage "user-friendly"
+- `Clone` : permet d'être cloné avec `.clone()`
+- `Copy` : permet d'être passé par `Copy` (uniquement faisable sur des
+  types contenant exclusivements des types `Copy`)
+- `Eq`, `PartialEq`, `Ord`, `PartialOrd` : égalité et comparaison
+- `Add`, `Mul`, etc : support des opérateurs `+`, `*`, etc
+
+Pour éviter d'implémenter à la main des traits triviaux, il est possible
+d'annoter une structure avec l'attribut `derive` :
+
+```rust
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+struct Point(u32, u23);
 ```
 
 
