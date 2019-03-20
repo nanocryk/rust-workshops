@@ -506,8 +506,9 @@ struct MonType {
 ```
 
 ```rust
+let un_entier = 42;
 let var = MonType {
-    un_entier: 42,
+    un_entier, // même nom, pas de répétition
     du_texte: "Hello, world!",
 };
 
@@ -739,6 +740,221 @@ d'annoter une structure avec l'attribut `derive` :
 ```rust
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 struct Point(u32, u23);
+```
+
+---
+template: default
+layout: true
+
+### Organisation
+
+---
+# Éxécutable ou bibliothèque ?
+
+Un projet peut être une bibliothèque s'il possède un `src/lib.rs`,
+un éxécutable s'il possède un `src/main.rs`, ou les deux.
+
+Il est recommandé d'isoler les traitements dans la bibliothèque et
+de ne garder dans l'éxécutable que ce qui conserne une éxécution
+(lecture et interprétation des arguments, variables d'environement, etc).
+Cela permet aussi de rendre les traitements réutilisables par
+d'autres bibliothèques ou éxécutables qui indiqueront cette bibliothèque
+comme dépendance.
+
+---
+# Dépendances
+
+Les projets sont appelés des *crates* et sont publiées sur
+[crates.io](https://crates.io).
+
+Pour définir une dépendance, il suffit de l'include dans la section
+`[dependencies]` du `Cargo.toml` avec sa version:
+
+```toml
+[dependencies]
+rand = "0.6.5"   # génération de nombre aléatoires
+```
+
+```rust
+let gen = rand::thread_rng();
+```
+
+Le mot clé `use` permet d'importer des noms :
+
+```rust
+use rand::thread_rng();
+
+let gen = thread_rng();
+```
+
+---
+# Modules
+
+À l'interieur d'une crate, il est vite nécéssaire d'organiser son code
+en modules regroupant des fonctionalités liés ou similaires.
+
+Pour créer un module `calc`, il suffit de créer un fichier `src/calc.rs` et
+de rajouter `mod calc` dans `src/lib.rs`.
+
+Un module peut lui même avoir des sous-modules. Pour que `calc` ai un sous-module
+`ui`, il faut créer un dossier `calc` dans lequel on met le fichier `ui.rs`,
+et rajouter `use ui` dans `calc.rs`.
+
+On optient donc l'arborescence suivante :
+
+```
+- Cargo.toml
+- src
+    - lib.rs
+    - calc.rs
+    - calc
+        - ui.rs
+```
+
+---
+# Visibilité
+
+Par defaut, tout sous-module, type et leurs éléments ne sont visible que dans le
+module dans lequel ils sont définis. Pour rendre public il faut utiliser
+le mot-clé `pub`.
+
+```rust
+// le sous module `bar` sera accessible de l'exterieur
+pub mod bar;
+
+/// Article sera utilisable par l'exterieur
+pub struct Article {
+    /// auteur n'est accessible que dans le module
+    auteur: String,
+    /// texte est accessible même en dehors du module
+    pub texte: String
+}
+```
+
+---
+# Visibilité
+
+Un type ne peux être instancié "à la main" uniquement si tous ses
+éléments sont publiques. Dans le cas contraire, des fonctions permetant
+de le construire doivent être implémentées.
+
+```rust
+impl Article {
+    /// Self est un alias du type implémenté
+    /// Pratique quand on à beaucoup de types génériques
+    pub fn new(auteur: &str, texte: &str) -> Self {
+        Self {
+            auteur,
+            texte
+        }
+    }
+
+    fn privee(&self) {
+        // fonction utilisable uniquement par le module
+    }
+}
+```
+
+---
+template: default
+layout: true
+
+### Un peu de pratique, le "Plus ou Moins"
+
+---
+# Énoncé
+
+- l'utilisateur doit choisir une borne supérieure
+- un nombre mystère est choisi aléatoirement entre 0 et cette borne (inclue)
+- l'utilisateur propose des nombres et le programme répond "Plus"
+  ou "Moins" jusqu'a ce que le nombre soit trouvé
+- on affiche le nombre d'essai
+
+> Si l'utilisateur ne rentre pas un nombre, on le lui redemande.
+
+# Pistes
+
+- `rand::thread_rng()` retourne un générateur de nombre
+- `std::io::stdin()` retourne l'entrée utilisateur
+- `String::parse()` permet de transformer une chaine
+- attention aux espaces/retours à la ligne !
+- lire les docs de rand et de la bibliothèque standard
+
+A vos claviers !
+
+---
+# Correction
+
+--
+Tout d'abord, on rajoute `rand` comme dépendance dans le `Cargo.toml`
+
+Pour récupérer un nombre entré par l'utilisateur :
+
+```rust
+use std::io;
+
+fn read_int() -> u32 {
+    loop {
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        match input.trim().parse::<u32>() {
+            Ok(number) => return number,
+            Err(_) => {
+                eprintln!("Merci d'entrer un entier valide : ")
+            },
+        }
+    }
+}
+```
+
+---
+# Correction
+
+On peut maintenant demander à l'utilisateur le max et tirer un
+nombre au hasard :
+
+```rust
+use rand::prelude::*; // recommandé par la doc de rand
+
+fn main() {
+    println!("Entrer la valeur maximum : ");
+
+    let max = loop {
+        let max = read_int();
+        if max == 0 {
+            eprint!("Le maximum doit être plus grand que 0 : ");
+        } else {
+            break max;
+        }
+    };
+
+    let mystery = thread_rng().gen_range(0, max);
+    
+```
+
+---
+# Correction
+
+Le trait `Ord`, la structure `Ordering` et le pattern matching permette
+d'avoir un code très lisible :
+
+```rust
+    let mut fails = 0;
+
+    loop {
+        print!("Entrer votre essai (entre 0 et {} inclu): ", max);
+
+        match read_int().cmp(&mystery) {
+            Ordering::Greater => println!("C'est moins !");
+            Ordering::Less => println!("C'est plus !");
+            Ordering::Equal => break,
+        }
+
+        fails += 1;
+    }
+
+    println!("Vous avez trouvé après {} erreurs !", fails);
+}
 ```
 
 
