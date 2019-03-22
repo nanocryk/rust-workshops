@@ -1,3 +1,5 @@
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css);
+
 h1,
 h2,
 h3 {
@@ -24,17 +26,11 @@ h3 {
 	color: #f3f3f3;
 	line-height: 0.8em;
 }
-
-/* pre {
-    border-left: 0.4em solid #d7d7d7;
-    padding: 1em !important;
-  }
-  code {
-    background: transparent !important;
-	} */
 	
 pre, code {
 	background-color: #1d1f21;
+	font-family: 'Fira Code', monospace;
+	line-height: 120%;
 }
 a {
 	color: #f92672;

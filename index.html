@@ -3,6 +3,7 @@
     <head>
         <title>Decouverte du langage Rust</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
         <link rel="stylesheet" href="res/milligram.min.css">
         <link rel="stylesheet" href="res/custom.css">
     </head>
@@ -291,7 +292,7 @@ let var2 = 18 + if ma_variable < 100 {
 ---
 # Expressions
 
-Mettre un `;` à la fin d'un expression empêche de retourner. Chaque branche
+Mettre un `;` à la fin d'un expression empêche de retourner une valeur. Chaque branche
 doit avoir le même type de retour.
 
 ```rust
@@ -375,7 +376,9 @@ Il existe 2 types de références :
 Pour une même valeur il ne peut y avoir qu'une référence unique ou plusieurs
 références partagées, mais pas les 2 en même temps.
 
-De plus, une référence ne peux pas exister plus longtemps que le propriétaire.
+De plus, une référence ne peux pas exister plus longtemps que le propriétaire (lifetime).
+
+Ces règles sont vérifiées à la compilation dans la très grande majorité des cas.
 
 ---
 # Emprunts (exemple)
@@ -451,7 +454,7 @@ let hello_world = hello + world;
 println!("{}", hello_world); // Hello, world!
 ```
 
-> Note : le premier paramètre de `println!` doit obligatoirement est une
+> Note : le premier paramètre de `println!` doit obligatoirement être une
 > "string literal", puisque le formattage est vérifié à la compilation. On ne 
 > peut donc pas utiliser directement écrire `println!(hello_world)`.
 
@@ -470,7 +473,7 @@ fn add(a: u32, b: u32) -> u32 {
 }
 ```
 
-La plupart des types primitif et quelques exceptions sont copiés, les autres
+La plupart des types primitifs à quelques exceptions sont copiés, les autres
 sont déplacées dans la fonction, et l'appelant n'est plus le propriétaire.
 
 ```rust
@@ -566,7 +569,7 @@ S'il est inutile de nommer les éléments d'une structure, on peut la
 déclarer comme ceci :
 
 ```rust
-struct Positon(u32, u32);
+struct Position(u32, u32);
 ```
 
 ```rust
@@ -658,6 +661,8 @@ match val {
 }
 ```
 
+`Option` remplaçe les valeurs `null` d'autres langages.
+
 ---
 # Result
 
@@ -678,8 +683,7 @@ match res {
 }
 ```
 
-Les types `Option` et `Result` remplacent les exceptions présentes
-dans d'autre langage mais absentes du Rust.
+`Result` remplace les exceptions présentes dans d'autres langages.
 
 ---
 # Traits
@@ -739,7 +743,7 @@ d'annoter une structure avec l'attribut `derive` :
 
 ```rust
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
-struct Point(u32, u23);
+struct Point(u32, u32);
 ```
 
 ---
@@ -755,7 +759,7 @@ Un projet peut être une bibliothèque s'il possède un `src/lib.rs`,
 un éxécutable s'il possède un `src/main.rs`, ou les deux.
 
 Il est recommandé d'isoler les traitements dans la bibliothèque et
-de ne garder dans l'éxécutable que ce qui conserne une éxécution
+de ne garder dans l'éxécutable que ce qui concerne une éxécution
 (lecture et interprétation des arguments, variables d'environement, etc).
 Cela permet aussi de rendre les traitements réutilisables par
 d'autres bibliothèques ou éxécutables qui indiqueront cette bibliothèque
@@ -790,17 +794,15 @@ let gen = thread_rng();
 ---
 # Modules
 
-À l'interieur d'une crate, il est vite nécéssaire d'organiser son code
-en modules regroupant des fonctionalités liés ou similaires.
+Organisation du code en modules.
 
-Pour créer un module `calc`, il suffit de créer un fichier `src/calc.rs` et
-de rajouter `mod calc` dans `src/lib.rs`.
+Pour créer un module `calc` : 
+- créer un fichier `src/calc.rs`
+- ajouter `mod calc` dans `src/lib.rs`.
 
-Un module peut lui même avoir des sous-modules. Pour que `calc` ai un sous-module
-`ui`, il faut créer un dossier `calc` dans lequel on met le fichier `ui.rs`,
-et rajouter `use ui` dans `calc.rs`.
-
-On optient donc l'arborescence suivante :
+Pour que `calc` ai un sous-module `ui` : 
+- créer un dossier `calc` dans lequel on met le fichier `ui.rs`
+- ajouter `mod ui` dans `calc.rs`.
 
 ```
 - Cargo.toml
@@ -956,8 +958,6 @@ d'avoir un code très lisible :
     println!("Vous avez trouvé après {} erreurs !", fails);
 }
 ```
-
-
         </textarea>
         <script src="res/remark-latest.min.js">
         </script>
