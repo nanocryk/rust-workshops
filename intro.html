@@ -1034,6 +1034,51 @@ struct Article<'a> {
     texte: &'a str,
 }
 ```
+
+---
+# Tests unitaires
+
+```rust
+fn add(a: u32, b: u32) -> u32 {
+    a + b
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*; // importe la fonction add
+
+    #[test]
+    fn test_add() {
+        assert!(add(2, 3) == 5);
+        assert_eq!(add(10, 7), 17);
+    }
+}
+```
+
+---
+# Documentation
+
+Documentation écrite directement dans le code en Markdown.
+
+Pour documenter le code suivant :
+
+```rust
+/// Calcule le carré d'un nombre.
+///
+/// Accepte n'importe quel type supportant une multiplication.
+fn square<T: Mul>(v: T) -> T {
+    v * v
+}
+```
+
+Pour documenter un module/lib/exe :
+```rust
+//! Description du module/lib/exe.
+```
+
+Du code inclu dans la documentation sera automatiquement lancé
+en tant que test unitaire pour vérifier que la documentation
+est bien à jour.
         </textarea>
         <script src="res/remark-latest.min.js">
         </script>
