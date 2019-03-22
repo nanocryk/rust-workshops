@@ -328,10 +328,10 @@ loop {
 ---
 # Boucles
 
-La boucle `for` permet de parcourir des itérateurs, par exemple un interval :
+La boucle `for` permet de parcourir des itérateurs, par exemple un interval (range) :
 
 ```rust
-for i in [0..10] {
+for i in (0..10) {
     println!("i = {}", i);
 }
 
@@ -735,6 +735,7 @@ where
 - `Clone` : permet d'être cloné avec `.clone()`
 - `Copy` : permet d'être passé par `Copy` (uniquement faisable sur des
   types contenant exclusivements des types `Copy`)
+- `Drop` : définition d'un destructeur
 - `Eq`, `PartialEq`, `Ord`, `PartialOrd` : égalité et comparaison
 - `Add`, `Mul`, etc : support des opérateurs `+`, `*`, etc
 
@@ -956,6 +957,81 @@ d'avoir un code très lisible :
     }
 
     println!("Vous avez trouvé après {} erreurs !", fails);
+}
+```
+---
+template: default
+layout: true
+
+### Notions supplémentaires
+
+---
+# Fonctions anonymes
+
+```rust
+let foo = |a, b| = a + b;
+let sum = foo(5, 10); // 15
+```
+
+Une fonction anonyme implémente l'un des 3 traits suivants :
+
+- `Fn(<params>) -> <ret>` : plusieurs invocations sans mutation
+- `FnMut(<params>) -> <ret>` : plusieurs invocatoins avec mutation
+- `FnOnce(<params>) -> <ret>` : une seule invocation
+
+Une `Fn` est automatiquement `FnMut`, et `FnMut` est automatiquement `FnOnce`.
+
+```rust
+fn foo<F>(a: u32, b: u32, f: F) -> u32
+where
+    F: FnOnce(u32, u32) -> u32
+{
+    f(a, b)
+}
+```
+
+---
+# Collections
+
+- `Vec<T>` : tableau taille variable
+- `VecDeque<T>` : file/pile
+- `HashMap<K, V>/BTreeMap<K, V>` : assocations clé/valeurs
+- `HashSet<T>/BTreeSet<T>` : ensembles
+
+---
+# Itérateurs
+
+- Permet de parcourir des collections.
+- Methodes chainées permettant de faire des traitements complèxes
+- Exécutés à la fin du chaînage et uniquement sur les données nécéssaires (lazy)
+
+```rust
+let list: Vec<u32> = (0..) // range infinie à partir de 0
+    .filter(|x| (x % 2 == 0) || (x % 3 == 0))
+    .map(|x| x * x)
+    .take(100)
+    .collect();
+// list contient des 100 premiers nombres divisibles par 2 ou 3
+```
+```rust
+let words = vec!["rust", "duniter", "poney"]; 
+let r = words
+    .into_iter() // consume words
+    .filter(|word| word.contains("r"))
+    .collect::<Vec<&str>>(); // ["rust", "duniter"]
+```
+
+---
+# Lifetimes
+
+Manipulations de références = présent de lifetimes.  
+Permet au compilateur de suivre la durée de vie des objets et de vérifier les
+règles des références.
+
+```rust
+struct Article<'a> {
+    auteur: &'a str,
+    texte: &'a str,
 }
 ```
         </textarea>
