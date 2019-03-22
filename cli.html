@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Structopt : Créer une CLI facilement</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+        <link rel="stylesheet" href="res/milligram.min.css">
+        <link rel="stylesheet" href="res/custom.css">
+    </head>
+    <body>
+        <textarea id="source">
+name: default
+layout: true
+class: dark
+
+---
+class: center, middle
+
+# Structopt : Créer une CLI facilement
+
+![Rust Logo](res/rust_logo.png)
+
+Réalisé par _nanocryk <nanocryk+rust@pm.me>_ 
+
+Présentation : https://nanocryk.github.io/rust-workshops/cli.html  
+Dépot GitHub : https://github.com/nanocryk/rust-workshops
+
+[Accès direct à l'atelier](#atelier)
+
+---
+template: default
+layout: true
+
+### Structopt
+
+---
+
+# Présentation de structopt
+
+`structopt` est une crate permettant de réaliser facilement une application
+en ligne de commande.
+
+Structopt sur [crates.io](https://crates.io/crates/structopt).
+
+Ligne à ajouter dans `Cargo.toml` :
+
+```toml
+structopt = "0.2.15"
+```
+
+---
+
+# Paramètres obligatoires
+
+```rust
+use structopt::StructOpt;
+
+#[derive(Debug, StructOpt)]
+struct Opt {
+    /// Auteur de l'article.
+    auteur: String,
+}
+
+fn main() {
+    let opt = Opt::from_args();
+    println!("{:?}", opt);
+}
+```
+
+```
+> cargo run
+error: The following required arguments were not provided:
+    <auteur>
+
+USAGE:
+    cli <auteur>
+
+For more information try --help
+```
+
+---
+# Description
+
+```rust
+/// Une longue description
+#[derive(Debug, StructOpt)]
+struct Opt {
+    // ...
+}
+```
+
+```
+> cargo run -- --help
+cli 0.1.0
+author <author@example.com>
+Une longue expication
+
+USAGE:
+    cli <auteur>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+ARGS:
+    <auteur>    Auteur de l'article.
+```
+
+---
+# Paramètre optionnel
+
+```rust
+/// Auteur de l'article.
+auteur: Option<String>,
+```
+
+```
+USAGE:
+    cli [auteur]
+```
+
+---
+# Paramètre nommé
+
+```rust
+/// Auteur de l'article.
+#[structopt(short = "a", long = "auteur")]
+auteur: Option<String>,
+```
+
+```
+USAGE:
+    cli [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -a, --auteur <auteur>    Auteur de l'article.
+```
+
+---
+template: default
+layout: true
+
+### Atelier
+
+---
+name: atelier
+
+atelier
+
+
+
+
+
+
+
+        </textarea>
+        <script src="res/remark-latest.min.js">
+        </script>
+        <script>
+            var slideshow = remark.create({
+                highlightStyle: 'tomorrow-night',
+            });
+        </script>
+    </body>
+</html>
