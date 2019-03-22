@@ -1,9 +1,9 @@
-# Workshop Rust : Les bases
+# Rust Workshops
 
-Explications des bases du langage Rust.
+Dépot regroupant différentes présentations à propos du langage Rust
+et de son écosystème.
 
-La présentation est lisible sur
-[github.io](https://nanocryk.github.io/ws-rust-bases/index.html).
+Accès aux présentations :
+[github.io](https://nanocryk.github.io/rust-workshops/intro.html).
 
-Elle fonction hors-ligne en clonant le dépot et en ouvrant le fichier `index.html`
-avec un navigateur web.
+Les présentations fonctionnent hors ligne (seule la police d'écriture du `code` est personnalisée).
