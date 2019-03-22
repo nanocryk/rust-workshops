@@ -141,6 +141,75 @@ OPTIONS:
 ```
 
 ---
+# Liste
+
+```rust
+/// Files 1
+#[structopt(short = "f")]
+files1: Vec<String>,
+/// Files 2
+files2: Vec<String>,
+```
+
+```
+USAGE:
+    cli [OPTIONS] [--] [files2]...
+
+FLAGS: ...
+
+OPTIONS:
+    -f <files1>...        Files 1
+
+ARGS:
+    <files2>...    Files 2
+```
+
+---
+# Parsing
+
+```rust
+fn parse_hex(src: &str) -> Result<u32, ParseIntError> {
+    u32::from_str_radix(src, 16)
+}
+
+#[derive(StructOpt)]
+struct HexReader {
+    #[structopt(short = "n", parse(try_from_str = "parse_hex"))]
+    number: u32,
+    #[structopt(short = "o", parse(from_os_str))]
+    output: PathBuf,
+    #[structopt(short = "v", parse(from_occurences))]
+    verbose: u32, // -v, -vv, -vvv
+}
+```
+
+---
+# Sous-commandes
+
+```rust
+#[derive(StructOpt)]
+#[structopt(name = "git", about = "the stupid content tracker")]
+enum Git {
+    #[structopt(name = "add")]
+    Add {
+        #[structopt(short = "i")]
+        interactive: bool,
+        #[structopt(short = "p")]
+        patch: bool,
+        #[structopt(parse(from_os_str))]
+        files: Vec<PathBuf>
+    },
+    #[structopt(name = "commit")]
+    Commit {
+        #[structopt(short = "m")]
+        message: Option<String>,
+        #[structopt(short = "a")]
+        all: bool
+    }
+}
+```
+
+---
 template: default
 layout: true
 
