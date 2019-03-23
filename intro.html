@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Decouverte du langage Rust</title>
+        <title>Découverte du langage Rust</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
         <link rel="stylesheet" href="res/milligram.min.css">
@@ -53,7 +53,7 @@ layout: true
 - très rapide et abstraction sans coût (pas de runtime)
 - très expressif (pattern matching, iterateurs)
 - potentiel successeur du C++
-- ... elu "langage le plus aimé de 2017" par la communauté de
+- ... élu "langage le plus aimé de 2017" par la communauté de
   Stack Overflow.
 
 ---
@@ -168,7 +168,7 @@ version = "0.1.0"
 # Auteurs
 authors = ["author <author@example.com>"]
 
-# Edition de Rust (2018 ou 2015; 2015 si absent)
+# Édition de Rust (2018 ou 2015; 2015 si absent)
 edition = "2018" 
 
 
@@ -189,7 +189,7 @@ fn main() {
 - `main` est la fonction principale du programme
 - `println!` permet d'afficher du texte
 - `!` indique que l'on appelle une macro
-- on ecrirait `println("Hello, world!")` si c'était une fonction
+- on écrirait `println("Hello, world!")` si c'était une fonction
 
 ---
 template: default
@@ -231,13 +231,13 @@ let val = 42;
 println!("La réponse est {}", 42);
 ```
 
-L'affichage des données est assez personnalisable mais nécéssite des
+L'affichage des données est assez personnalisable mais nécessite des
 notions plus avancées.
 
 ---
 # Mutabilité
 
-Immutable par defaut.
+Immutable par défaut.
 
 ```rust
 let ma_variable = 0;
@@ -279,7 +279,7 @@ La value de la dernière expression d'un bloc (if/else, fonction, etc) est
 retourné dans le bloc supérieur.
 
 
-On peut par exemple ecrire ceci :
+On peut par exemple écrire ceci :
 
 ```rust
 let var2 = 18 + if ma_variable < 100 {
@@ -371,7 +371,7 @@ Une valeur peut être empruntée sous la forme d'une référence.
 Il existe 2 types de références :
 
 - les références partagées `&` (lecture seule)
-- les rérérences uniques `&mut` (lecture et écriture)
+- les références uniques `&mut` (lecture et écriture)
 
 Pour une même valeur il ne peut y avoir qu'une référence unique ou plusieurs
 références partagées, mais pas les 2 en même temps.
@@ -433,10 +433,10 @@ Les chaîne de caractères sont encodées en UTF8 (beaucoup d'alphabets, emojis,
 
 Le type principale est la "string slice" `str`, utilisée la plupart du temps sous
 la forme de référence `&str`. Pour allouer une chaîne dynamiquement, on utilise
-le type `String`.Une chaîne présente "en dûr" dans le code est appellée une
-"string literal", est de type `&str` et s'écrit `"en guillets doubles"`.
+le type `String`.Une chaîne présente "en dûr" dans le code est appelée une
+"string literal", est de type `&str` et s'écrit `"en guillemets doubles"`.
 
-Chaque caractère est de type `char` et s'écrit entre guillets simples `'a'`.
+Chaque caractère est de type `char` et s'écrit entre guillemets simples `'a'`.
 
 ---
 # Chaîne de caractères
@@ -446,7 +446,7 @@ let hello = "Hello"; // &str
 let world = ", world!" // &str
 let hello = hello.to_owned() // String
 
-// la concatenation consomme le partie de gauche et lui ajoute la
+// la concaténation consomme le partie de gauche et lui ajoute la
 // partie de droite. La partie de gauche doit donc être une
 // `String`, la droite peut être une `&str`.
 let hello_world = hello + world; 
@@ -455,7 +455,7 @@ println!("{}", hello_world); // Hello, world!
 ```
 
 > Note : le premier paramètre de `println!` doit obligatoirement être une
-> "string literal", puisque le formattage est vérifié à la compilation. On ne 
+> "string literal", puisque le formatage est vérifié à la compilation. On ne
 > peut donc pas utiliser directement écrire `println!(hello_world)`.
 
 ---
@@ -624,11 +624,11 @@ match action {
         println!("appui sur {}", lettre)
     },
     Action::Touche{lettre: 'a', false} => {
-        println!("relachement de a")
+        println!("relâchement de a")
     },
     // tous les cas doivent être traités
-    // pour avoir un comportement par défaut, utilser
-    _ => println!("une autre touche à été relachée"),
+    // pour avoir un comportement par défaut, utiliser
+    _ => println!("une autre touche à été relâchée"),
 }
 ```
 
@@ -641,7 +641,7 @@ layout: true
 ---
 # Option
 
-Quand on veut retourner une valeur qui peut être optionelle,
+Quand on veut retourner une valeur qui peut être optionnelle,
 on utilise le type `Option<T>`, où `T` est le type de la valeur.
 On dit que `T` est un type générique, ou paramètre de type.
 
@@ -661,7 +661,7 @@ match val {
 }
 ```
 
-`Option` remplaçe les valeurs `null` d'autres langages.
+`Option` remplace les valeurs `null` d'autres langages.
 
 ---
 # Result
@@ -688,8 +688,8 @@ match res {
 ---
 # Traits
 
-Un trait représente une contraite que doit respecter un type.
-Il demande souvant d'implémenter une ou plusieurs methodes.
+Un trait représente une contrainte que doit respecter un type.
+Il demande souvent d'implémenter une ou plusieurs méthodes.
 Il peut aussi demander de spécifier un type associé.
 
 Le trait `Add` qui permet l'addition entre 2 valeurs est définie
@@ -715,8 +715,8 @@ fn ajouter<T: Add>(a: T, b: T) -> T::Output {
 }
 ```
 
-La contraines peut aussi être écrite avec le mot-clé `where` pour plus
-de lisibilité (notament avec des contraintes plus complèxes) :
+La contraintes peut aussi être écrite avec le mot-clé `where` pour plus
+de lisibilité (notamment avec des contraintes plus complexes) :
 
 ```rust
 fn ajouter<T>(a: T, b: T) -> T::Output
@@ -754,16 +754,16 @@ layout: true
 ### Organisation
 
 ---
-# Éxécutable ou bibliothèque ?
+# Exécutable ou bibliothèque ?
 
 Un projet peut être une bibliothèque s'il possède un `src/lib.rs`,
-un éxécutable s'il possède un `src/main.rs`, ou les deux.
+un exécutable s'il possède un `src/main.rs`, ou les deux.
 
 Il est recommandé d'isoler les traitements dans la bibliothèque et
-de ne garder dans l'éxécutable que ce qui concerne une éxécution
-(lecture et interprétation des arguments, variables d'environement, etc).
+de ne garder dans l'exécutable que ce qui concerne une exécution
+(lecture et interprétation des arguments, variables d'environnement, etc).
 Cela permet aussi de rendre les traitements réutilisables par
-d'autres bibliothèques ou éxécutables qui indiqueront cette bibliothèque
+d'autres bibliothèques ou exécutables qui indiqueront cette bibliothèque
 comme dépendance.
 
 ---
@@ -772,7 +772,7 @@ comme dépendance.
 Les projets sont appelés des *crates* et sont publiées sur
 [crates.io](https://crates.io).
 
-Pour définir une dépendance, il suffit de l'include dans la section
+Pour définir une dépendance, il suffit de l'inclure dans la section
 `[dependencies]` du `Cargo.toml` avec sa version:
 
 ```toml
@@ -787,7 +787,7 @@ let gen = rand::thread_rng();
 Le mot clé `use` permet d'importer des noms :
 
 ```rust
-use rand::thread_rng();
+use rand::thread_rng;
 
 let gen = thread_rng();
 ```
@@ -817,15 +817,15 @@ Pour que `calc` ai un sous-module `ui` :
 ---
 # Visibilité
 
-Par defaut, tout sous-module, type et leurs éléments ne sont visible que dans le
+Par défaut, tout sous-module, type et leurs éléments ne sont visible que dans le
 module dans lequel ils sont définis. Pour rendre public il faut utiliser
 le mot-clé `pub`.
 
 ```rust
-// le sous module `bar` sera accessible de l'exterieur
+// le sous module `bar` sera accessible de l'extérieur
 pub mod bar;
 
-/// Article sera utilisable par l'exterieur
+/// Article sera utilisable par l'extérieur
 pub struct Article {
     /// auteur n'est accessible que dans le module
     auteur: String,
@@ -838,7 +838,7 @@ pub struct Article {
 # Visibilité
 
 Un type ne peux être instancié "à la main" uniquement si tous ses
-éléments sont publiques. Dans le cas contraire, des fonctions permetant
+éléments sont publiques. Dans le cas contraire, des fonctions permettant
 de le construire doivent être implémentées.
 
 ```rust
@@ -870,7 +870,7 @@ layout: true
 - l'utilisateur doit choisir une borne supérieure
 - un nombre mystère est choisi aléatoirement entre 0 et cette borne (inclue)
 - l'utilisateur propose des nombres et le programme répond "Plus"
-  ou "Moins" jusqu'a ce que le nombre soit trouvé
+  ou "Moins" jusqu'à ce que le nombre soit trouvé
 - on affiche le nombre d'essai
 - quand l'utilisateur ne rentre pas un nombre, on le lui redemande.
 
@@ -937,7 +937,7 @@ fn main() {
 ---
 # Correction
 
-Le trait `Ord`, la structure `Ordering` et le pattern matching permette
+Le trait `Ord`, la structure `Ordering` et le pattern matching permettent
 d'avoir un code très lisible :
 
 ```rust
@@ -968,7 +968,7 @@ layout: true
 # Fonctions anonymes
 
 ```rust
-let foo = |a, b| = a + b;
+let foo = |a, b| a + b;
 let sum = foo(5, 10); // 15
 ```
 
@@ -1001,8 +1001,8 @@ where
 # Itérateurs
 
 - Permet de parcourir des collections.
-- Methodes chainées permettant de faire des traitements complèxes
-- Exécutés à la fin du chaînage et uniquement sur les données nécéssaires (lazy)
+- Méthodes chainées permettant de faire des traitements complexes
+- Exécutés à la fin du chaînage et uniquement sur les données nécessaires (lazy)
 
 ```rust
 let list: Vec<u32> = (0..) // range infinie à partir de 0
@@ -1075,7 +1075,7 @@ Pour documenter un module/lib/exe :
 //! Description du module/lib/exe.
 ```
 
-Du code inclu dans la documentation sera automatiquement lancé
+Du code inclus dans la documentation sera automatiquement lancé
 en tant que test unitaire pour vérifier que la documentation
 est bien à jour.
         </textarea>
